@@ -246,9 +246,9 @@ const Popup: React.FC = () => {
   ];
 
   return (
-    <div className="w-96 h-[600px] bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col shadow-2xl">
+    <div className="w-full min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white p-6 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white p-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="relative z-10">
           <div className="flex items-center justify-between">
@@ -319,8 +319,8 @@ const Popup: React.FC = () => {
         )}
 
         {activeTab === 'overview' && (
-          <div className="p-6 space-y-6">
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm">
+          <div className="p-4 space-y-4">
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 shadow-sm">
               <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 {t('overview.pageInfo')}
@@ -337,7 +337,7 @@ const Popup: React.FC = () => {
               </div>
             </div>
             
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm">
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 shadow-sm">
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                 {t('overview.quickActions')}
@@ -389,7 +389,7 @@ const Popup: React.FC = () => {
             )}
 
             {/* Colors Section */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm">
+            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -499,8 +499,8 @@ const Popup: React.FC = () => {
         )}
 
         {activeTab === 'element' && (
-          <div className="p-6 space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200/50 shadow-sm">
+          <div className="p-4 space-y-4">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200/50 shadow-sm">
               <h3 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 {t('picker.title')}
@@ -523,7 +523,7 @@ const Popup: React.FC = () => {
             </div>
 
             {elementStyles && (
-              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm animate-in slide-in-from-bottom-4 duration-300">
+              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 shadow-sm animate-in slide-in-from-bottom-4 duration-300">
                 <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <span className="text-green-700">✅ {t('picker.selectedElement')}</span>
@@ -632,7 +632,7 @@ const Popup: React.FC = () => {
         )}
 
         {activeTab === 'export' && (
-          <div className="p-6 space-y-6">
+          <div className="p-4 space-y-4">
             <div className="bg-white/70 backdrop-blur-sm rounded-xl p-5 border border-gray-200/50 shadow-sm">
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>

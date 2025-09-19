@@ -43,6 +43,17 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('Background script loaded at:', new Date().toISOString());
 });
 
+// Handle action click to open side panel
+chrome.action.onClicked.addListener(async (tab) => {
+  console.log('Extension action clicked, opening side panel for tab:', tab.id);
+  try {
+    await chrome.sidePanel.open({ tabId: tab.id });
+    console.log('Side panel opened successfully');
+  } catch (error) {
+    console.error('Failed to open side panel:', error);
+  }
+});
+
 // Handle messages from popup and content scripts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Background received message:', message);
