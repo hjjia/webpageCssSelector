@@ -246,7 +246,7 @@ const Popup: React.FC = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col">
+    <div className="w-full h-screen max-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white p-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
