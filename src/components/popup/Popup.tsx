@@ -12,6 +12,7 @@ import {
 } from '../../utils/styleAnalyzer';
 import { injectElementPicker } from '../../utils/elementPicker';
 import { isUrlRestricted, getUrlRestrictionMessage, getUrlRestrictionCategory } from '../../utils/urlConfig';
+import ElementStylesDisplay from './ElementStylesDisplay';
 
 type TabType = 'overview' | 'element' | 'export';
 
@@ -240,9 +241,9 @@ const Popup: React.FC = () => {
   };
 
   const tabs = [
-    { id: 'overview', label: t('overview'), icon: Palette },
-    { id: 'element', label: t('element'), icon: Type },
-    { id: 'export', label: t('export'), icon: Download }
+    { id: 'overview', label: t('nav.overview'), icon: Palette },
+    { id: 'element', label: t('nav.element'), icon: Type },
+    { id: 'export', label: t('nav.export'), icon: Download }
   ];
 
   return (
@@ -260,7 +261,7 @@ const Popup: React.FC = () => {
               onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'zh' : 'en')}
               className="text-blue-100 hover:text-white text-sm px-2 py-1 rounded"
             >
-              {i18n.language === 'en' ? '中文' : 'EN'}
+              {i18n.language === 'en' ? 'EN' : '中文'}
             </button>
           </div>
         </div>
@@ -434,7 +435,7 @@ const Popup: React.FC = () => {
                       </div>
                       <div className="mt-2 text-center">
                         <div className="text-xs font-medium text-gray-700">{getColorValue(color)}</div>
-                        <div className="text-xs text-gray-500">{color.usage || 1} uses</div>
+                        <div className="text-xs text-gray-500">{color.usage || 1} {t('uses')}</div>
                       </div>
                     </div>
                   ))}
@@ -481,7 +482,7 @@ const Popup: React.FC = () => {
                         </div>
                       </div>
                       <div className="mt-2 text-sm text-gray-600" style={{ fontFamily: font.family }}>
-                        The quick brown fox jumps over the lazy dog
+                        {t('fontPreview')}
                       </div>
                     </div>
                   ))}
@@ -526,209 +527,12 @@ const Popup: React.FC = () => {
             </div>
 
             {elementStyles && (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm animate-in slide-in-from-bottom-4 duration-300">
-                <div className="p-4 border-b border-gray-100">
-                  <h4 className="text-lg font-semibold text-gray-900">
-                    {t('picker.selectedElement')}
-                  </h4>
-                </div>
-                
-                <div className="p-4 space-y-3">
-                  <div className="bg-gray-50 hover:bg-gray-100 rounded-lg p-3 transition-colors duration-200">
-                    <h5 className="font-medium text-gray-900 mb-2">{t('picker.elementInfo')}</h5>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('picker.tag')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.tagName}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.tagName, 'tag')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'tag' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('picker.class')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border max-w-32 truncate transition-colors duration-200">{elementStyles.className || t('picker.none')}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.className || '', 'class')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                            disabled={!elementStyles.className}
-                          >
-                            {copiedItem === 'class' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('picker.id')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.id || t('picker.none')}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.id || '', 'id')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                            disabled={!elementStyles.id}
-                          >
-                            {copiedItem === 'id' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gray-50 hover:bg-gray-100 rounded-lg p-3 transition-colors duration-200">
-                     <h5 className="font-medium text-gray-900 mb-2">{t('dimensions')}</h5>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('width')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.dimensions.width}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.dimensions.width, 'width')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'width' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('height')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.dimensions.height}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.dimensions.height, 'height')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'height' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 hover:bg-gray-100 rounded-lg p-3 transition-colors duration-200">
-                     <h5 className="font-medium text-gray-900 mb-2">{t('spacing')}</h5>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('margin')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.spacing.margin}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.spacing.margin, 'margin')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'margin' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('padding')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.spacing.padding}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.spacing.padding, 'padding')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'padding' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 hover:bg-gray-100 rounded-lg p-3 transition-colors duration-200">
-                     <h5 className="font-medium text-gray-900 mb-2">{t('colors')}</h5>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('background')}:</span>
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded border shadow-sm" style={{ backgroundColor: elementStyles.colors.background }}></div>
-                            <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.colors.background}</code>
-                          </div>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.colors.background, 'background')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'background' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('color')}:</span>
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded border shadow-sm" style={{ backgroundColor: elementStyles.colors.color }}></div>
-                            <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.colors.color}</code>
-                          </div>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.colors.color, 'color')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'color' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 hover:bg-gray-100 rounded-lg p-3 transition-colors duration-200">
-                     <h5 className="font-medium text-gray-900 mb-2">{t('typography')}</h5>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('fontFamily')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border max-w-32 truncate transition-colors duration-200">{elementStyles.typography.fontFamily}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.typography.fontFamily, 'fontFamily')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'fontFamily' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('fontSize')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.typography.fontSize}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.typography.fontSize, 'fontSize')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'fontSize' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('fontWeight')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.typography.fontWeight}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.typography.fontWeight, 'fontWeight')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'fontWeight' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">{t('lineHeight')}:</span>
-                        <div className="flex items-center gap-2">
-                          <code className="bg-white hover:bg-gray-50 px-2 py-1 rounded text-xs font-mono border transition-colors duration-200">{elementStyles.typography.lineHeight}</code>
-                          <button
-                            onClick={() => copyToClipboard(elementStyles.typography.lineHeight, 'lineHeight')}
-                            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-                          >
-                            {copiedItem === 'lineHeight' ? <Check size={14} /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ElementStylesDisplay
+                    elementStyles={elementStyles}
+                    copyToClipboard={(text, key) => copyToClipboard(text, key)}
+                    copiedItem={copiedItem}
+                    t={t}
+                  />
             )}
           </div>
         )}

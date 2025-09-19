@@ -9,10 +9,12 @@ const resources = {
       appDescription: 'Style Extractor',
       
       // Navigation
-      overview: 'Overview',
-      element: 'Element',
-      export: 'Export',
-      settings: 'Settings',
+      nav: {
+        overview: 'Overview',
+        element: 'Element',
+        export: 'Export',
+        settings: 'Settings'
+      },
       
       // Tabs
       tabs: {
@@ -23,6 +25,9 @@ const resources = {
       },
       
       // Overview Tab
+      overview: {
+        quickActions: 'Quick Actions'
+      },
       globalAnalysis: 'Global Analysis',
       colorPalette: 'Color Palette',
       fontFamilies: 'Font Families',
@@ -48,6 +53,12 @@ const resources = {
       fontWeight: 'Font Weight',
       
       // Element Picker
+      picker: {
+        title: 'Element Picker',
+        description: 'Select any element to analyze its styles',
+        tip: 'Element Picker Active',
+        instruction: 'Click on any element to analyze its styles'
+      },
       pickElement: 'Pick Element',
       elementPicker: 'Element Picker',
       clickToSelect: 'Click on any element to analyze its styles',
@@ -71,11 +82,23 @@ const resources = {
       boxShadow: 'Box Shadow',
       lineHeight: 'Line Height',
       
+      // Element Info
+      elementInfo: 'Element Info',
+      tagName: 'Tag Name',
+      className: 'Class Name',
+      id: 'ID',
+      allStyles: 'All Styles',
+      
       // Code Output
       originalCSS: 'Original CSS',
       tailwindCSS: 'Tailwind CSS',
       copyCode: 'Copy Code',
       codeCopied: 'Code copied to clipboard',
+      completeCSS: 'Complete CSS',
+      hide: 'Hide',
+      show: 'Show',
+      copied: 'Copied',
+      copyCSS: 'Copy CSS',
       
       // Export
       exportConfig: 'Export Config',
@@ -87,6 +110,12 @@ const resources = {
       configGenerated: 'Config generated successfully',
       
       // Actions
+      actions: {
+        analyzing: 'Analyzing...',
+        unavailable: 'Unavailable on this page',
+        analyze: 'Analyze Page',
+        pickElement: 'Pick Element'
+      },
       copy: 'Copy',
       download: 'Download',
       cancel: 'Cancel',
@@ -123,10 +152,12 @@ const resources = {
       appDescription: '样式提取器',
       
       // Navigation
-      overview: '概览',
-      element: '元素',
-      export: '导出',
-      settings: '设置',
+      nav: {
+        overview: '概览',
+        element: '元素',
+        export: '导出',
+        settings: '设置'
+      },
       
       // Tabs
       tabs: {
@@ -137,6 +168,9 @@ const resources = {
       },
       
       // Overview Tab
+      overview: {
+        quickActions: '快速操作'
+      },
       globalAnalysis: '全局分析',
       colorPalette: '色彩调色板',
       fontFamilies: '字体家族',
@@ -162,6 +196,12 @@ const resources = {
       fontWeight: '字体粗细',
       
       // Element Picker
+      picker: {
+        title: '元素选择器',
+        description: '选择任意元素来分析其样式',
+        tip: '元素选择器已激活',
+        instruction: '点击任意元素来分析其样式'
+      },
       pickElement: '选择元素',
       elementPicker: '元素选择器',
       clickToSelect: '点击任意元素来分析其样式',
@@ -185,11 +225,23 @@ const resources = {
       boxShadow: '阴影',
       lineHeight: '行高',
       
+      // Element Info
+      elementInfo: '元素信息',
+      tagName: '标签名',
+      className: '类名',
+      id: 'ID',
+      allStyles: '所有样式',
+      
       // Code Output
       originalCSS: '原始 CSS',
       tailwindCSS: 'Tailwind CSS',
       copyCode: '复制代码',
       codeCopied: '代码已复制到剪贴板',
+      completeCSS: '完整 CSS',
+      hide: '隐藏',
+      show: '显示',
+      copied: '已复制',
+      copyCSS: '复制 CSS',
       
       // Export
       exportConfig: '导出配置',
@@ -201,6 +253,12 @@ const resources = {
       configGenerated: '配置生成成功',
       
       // Actions
+      actions: {
+        analyzing: '分析中...',
+        unavailable: '此页面不可用',
+        analyze: '分析页面',
+        pickElement: '选择元素'
+      },
       copy: '复制',
       download: '下载',
       cancel: '取消',

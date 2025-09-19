@@ -126,8 +126,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Check if the tab URL is accessible
         if (isRestrictedUrl(activeTab.url || '')) {
           const errorMessage = getRestrictedPageMessage(activeTab.url || '');
-          console.error('Cannot access restricted page:', activeTab.url, errorMessage);
+          console.log('Cannot access restricted page:', activeTab.url);
           sendResponse({ 
+            success: false,
             error: errorMessage,
             restricted: true,
             url: activeTab.url 
