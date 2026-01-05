@@ -43,6 +43,17 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('Background script loaded at:', new Date().toISOString());
 });
 
+// Handle action click to open side panel
+chrome.action.onClicked.addListener(async (tab) => {
+  console.log('Extension action clicked, opening side panel for tab:', tab.id);
+  try {
+    await chrome.sidePanel.open({ tabId: tab.id });
+    console.log('Side panel opened successfully');
+  } catch (error) {
+    console.error('Failed to open side panel:', error);
+  }
+});
+
 // Handle messages from popup and content scripts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Background received message:', message);
@@ -115,8 +126,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Check if the tab URL is accessible
         if (isRestrictedUrl(activeTab.url || '')) {
           const errorMessage = getRestrictedPageMessage(activeTab.url || '');
-          console.error('Cannot access restricted page:', activeTab.url, errorMessage);
+          console.log('Cannot access restricted page:', activeTab.url);
           sendResponse({ 
+            success: false,
             error: errorMessage,
             restricted: true,
             url: activeTab.url 
