@@ -148,7 +148,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             const injectWithRetry = () => {
               chrome.scripting.executeScript({
                 target: { tabId: activeTab.id! },
-                files: ['assets/content.ts-loader.js']
+                files: ['assets/content-loader.js']
               }, () => {
                 if (chrome.runtime.lastError) {
                   console.error('Error injecting content script:', chrome.runtime.lastError.message);
