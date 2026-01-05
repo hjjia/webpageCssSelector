@@ -9,6 +9,10 @@
     "scripting",
     "sidePanel"
   ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
   "action": {
     "default_title": "CSS Master",
     "default_icon": {

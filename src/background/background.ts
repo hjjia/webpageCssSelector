@@ -62,20 +62,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'ANALYZE_STYLES':
       console.log('Analyzing styles...');
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.query({ currentWindow: true }, (tabs) => {
         if (chrome.runtime.lastError) {
           console.error('Error querying tabs:', chrome.runtime.lastError.message);
           sendResponse({ error: chrome.runtime.lastError.message });
           return;
         }
-        
-        if (tabs.length === 0) {
+        const candidate = tabs.find(t => t.active && !!t.url && (t.url.startsWith('http://') || t.url.startsWith('https://')));
+        if (!candidate) {
           console.error('No active tab found');
           sendResponse({ error: 'No active tab found' });
           return;
         }
-        
-        const activeTab = tabs[0];
+        const activeTab = candidate;
         console.log('Active tab found for analysis:', activeTab.id, activeTab.url);
         
         // Check if the tab URL is accessible using centralized config
@@ -106,20 +105,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'ACTIVATE_PICKER':
       console.log('Activating picker...');
       // Query for the active tab
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.query({ currentWindow: true }, (tabs) => {
         if (chrome.runtime.lastError) {
           console.error('Error querying tabs:', chrome.runtime.lastError.message);
           sendResponse({ error: chrome.runtime.lastError.message });
           return;
         }
-        
-        if (tabs.length === 0) {
+        const candidate = tabs.find(t => t.active && !!t.url && (t.url.startsWith('http://') || t.url.startsWith('https://')));
+        if (!candidate) {
           console.error('No active tab found');
           sendResponse({ error: 'No active tab found' });
           return;
         }
-        
-        const activeTab = tabs[0];
+        const activeTab = candidate;
         console.log('Active tab found:', activeTab.id, activeTab.url);
         console.log('Tab details:', activeTab);
         
@@ -152,6 +150,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
               }, () => {
                 if (chrome.runtime.lastError) {
                   console.error('Error injecting content script:', chrome.runtime.lastError.message);
+                  const msg = chrome.runtime.lastError.message || '';
+                  if (msg.includes('Cannot access contents of the page')) {
+                    try {
+                      const origin = new URL(activeTab.url || '').origin + '/*';
+                      chrome.permissions?.request({ origins: [origin] }, (granted) => {
+                        if (granted) {
+                          retryCount = 0;
+                          injectWithRetry();
+                        } else {
+                          sendResponse({ success: false, error: 'Permission not granted for origin' });
+                        }
+                      });
+                      return;
+                    } catch (_) {}
+                  }
                   
                   if (retryCount < maxRetries) {
                     retryCount++;
@@ -256,7 +269,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Handle tab updates to inject content script if needed
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url && !tab.url.startsWith('chrome://')) {
-    // Content script is already injected via manifest.json
-    console.log('Tab updated:', tab.url);
+    chrome.runtime.sendMessage({ type: 'TAB_UPDATED', tabId, url: tab.url });
   }
+});
+
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+    if (chrome.runtime.lastError) return;
+    if (!tab?.url || tab.url.startsWith('chrome://')) return;
+    chrome.runtime.sendMessage({ type: 'TAB_CHANGED', tabId: activeInfo.tabId, url: tab.url });
+  });
 });

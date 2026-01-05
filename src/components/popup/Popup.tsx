@@ -75,6 +75,14 @@ const Popup: React.FC = () => {
         console.log('Picker deactivated in popup');
         setIsPickingElement(false);
         sendResponse({ success: true });
+      } else if (message.type === 'TAB_CHANGED' || message.type === 'TAB_UPDATED') {
+        setIsAnalyzing(false);
+        setIsPickingElement(false);
+        setSelectedElementData(null);
+        setElementStyles(null);
+        setGlobalStyles(null);
+        getCurrentPageInfo();
+        sendResponse({ success: true });
       }
     };
     
@@ -116,9 +124,9 @@ const Popup: React.FC = () => {
 
   const getCurrentPageInfo = async () => {
     try {
-      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (tabs.length > 0 && tabs[0].url) {
-        const tab = tabs[0];
+      const tabs = await chrome.tabs.query({ currentWindow: true });
+      const tab = tabs.find(t => t.active && !!t.url && (t.url.startsWith('http://') || t.url.startsWith('https://')));
+      if (tab && tab.url) {
         const url = tab.url || '';
         
         // Use centralized URL restriction detection
