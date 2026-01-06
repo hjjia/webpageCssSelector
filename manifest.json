@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CSS Master: Style Extractor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Extract colors, fonts, and styles from any webpage with one click. Export to Tailwind CSS config.",
   "permissions": [
     "activeTab",
